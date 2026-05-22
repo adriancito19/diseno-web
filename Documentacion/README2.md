@@ -1,0 +1,1 @@
+En esta carpeta ira todo lo relacionado al documento vision y los diseños que se vaya realizando a lo largo de este proyecto, por el momento también se guardara la base de datos aquí también 
