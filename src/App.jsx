@@ -1,122 +1,250 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState, useMemo, useEffect } from 'react';
+import './App.css';
+
+// Constants
+import { INITIAL_PRODUCTS, BUILDER_OPTIONS } from './constants/products';
+
+// Components
+import Navbar from './components/Navbar/Navbar';
+import Hero from './components/Hero/Hero';
+import Catalog from './components/Catalog/Catalog';
+import ProductDetail from './components/Catalog/ProductDetail';
+import PCBuilder from './components/PCBuilder/PCBuilder';
+import Footer from './components/Footer/Footer';
+import Advantages from './components/Advantages/Advantages';
+import CartModal from './components/Modals/CartModal';
+import LoginModal from './components/Modals/LoginModal';
+import Contact from './components/Contact/Contact';
 
 function App() {
-  const [count, setCount] = useState(0)
+  // Main view state
+  const [activeView, setActiveView] = useState('home');
+
+  // Product modal state
+  const [modalProduct, setModalProduct] = useState(null);
+
+  const viewProductDetail = (product) => {
+    setModalProduct(product);
+    setActiveView('product-detail');
+    window.scrollTo(0, 0);
+  };
+
+  const closeProductDetail = () => {
+    setActiveView('catalog');
+    setModalProduct(null);
+    window.scrollTo(0, 0);
+  };
+
+  // Store states
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [cart, setCart] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [user, setUser] = useState(null);
+
+  // Login form state
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+
+  // PC Builder State
+  const [builderConfig, setBuilderConfig] = useState({
+    cpu: BUILDER_OPTIONS.cpu[0],
+    gpu: BUILDER_OPTIONS.gpu[2],
+    ram: BUILDER_OPTIONS.ram[1],
+    ssd: BUILDER_OPTIONS.ssd[0],
+    gabinete: BUILDER_OPTIONS.gabinete[0]
+  });
+
+  // Filtered products list
+  const products = useMemo(() => {
+    let filtered = INITIAL_PRODUCTS;
+    if (selectedCategory !== 'all') {
+      filtered = filtered.filter((product) => product.category === selectedCategory);
+    }
+    if (searchQuery.trim() !== '') {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter((product) =>
+        product.name.toLowerCase().includes(query) ||
+        product.description.toLowerCase().includes(query) ||
+        product.specs.some((spec) => spec.toLowerCase().includes(query))
+      );
+    }
+    return filtered;
+  }, [searchQuery, selectedCategory]);
+
+  // Cart operations
+  const addToCart = (product) => {
+    setCart((prevCart) => {
+      const existing = prevCart.find(item => item.id === product.id && !item.isCustom);
+      if (existing) {
+        return prevCart.map(item => 
+          (item.id === product.id && !item.isCustom) ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      }
+      return [...prevCart, { ...product, quantity: 1 }];
+    });
+    setIsCartOpen(true);
+  };
+
+  const removeFromCart = (itemId) => {
+    setCart((prevCart) => prevCart.filter(item => item.id !== itemId));
+  };
+
+  const updateCartQuantity = (itemId, newQty) => {
+    if (newQty <= 0) {
+      removeFromCart(itemId);
+      return;
+    }
+    setCart((prevCart) => prevCart.map(item => 
+      item.id === itemId ? { ...item, quantity: newQty } : item
+    ));
+  };
+
+  const getCartTotal = () => {
+    return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+  };
+
+  const getCartCount = () => {
+    return cart.reduce((count, item) => count + item.quantity, 0);
+  };
+
+  const addCustomPcToCart = () => {
+    const totalPrice = builderConfig.cpu.price + 
+                        builderConfig.gpu.price + 
+                        builderConfig.ram.price + 
+                        builderConfig.ssd.price + 
+                        builderConfig.gabinete.price;
+
+    const customPcProduct = {
+      id: Date.now(),
+      name: `Nova Custom PC (${builderConfig.gabinete.id === 'ice' ? 'Ice White' : 'Midnight Black'})`,
+      price: totalPrice,
+      isCustom: true,
+      specs: [
+        builderConfig.cpu.name,
+        builderConfig.gpu.name,
+        builderConfig.ram.name,
+        builderConfig.ssd.name,
+        builderConfig.gabinete.name
+      ],
+      image: builderConfig.gabinete.id === 'ice' ? '/images/pc_2_1779304486929.png' : '/images/pc_1_1779304111464.png',
+      quantity: 1
+    };
+
+    setCart((prevCart) => [...prevCart, customPcProduct]);
+    setIsCartOpen(true);
+  };
+
+  // Login handler
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (loginEmail.trim() !== '') {
+      setUser({ email: loginEmail });
+      setIsLoginOpen(false);
+      setLoginEmail('');
+      setLoginPassword('');
+    }
+  };
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className="app-container">
+      <Navbar 
+        activeView={activeView}
+        setActiveView={setActiveView}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        setSelectedCategory={setSelectedCategory}
+        user={user}
+        setUser={setUser}
+        setIsLoginOpen={setIsLoginOpen}
+        setIsCartOpen={setIsCartOpen}
+        cartCount={getCartCount()}
+      />
 
-      <div className="ticks"></div>
+      <main className="main-content-flow">
+        {activeView === 'home' && (
+          <>
+            <Hero 
+              setActiveView={setActiveView}
+              setSelectedCategory={setSelectedCategory}
+              setSearchQuery={setSearchQuery}
+            />
+            <Advantages />
+            <Catalog 
+              products={products.slice(0, 3)} 
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              onProductClick={viewProductDetail}
+              onAddToCart={addToCart}
+            />
+          </>
+        )}
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+        {activeView === 'catalog' && (
+          <Catalog 
+            products={products}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            onProductClick={viewProductDetail}
+            onAddToCart={addToCart}
+          />
+        )}
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+        {activeView === 'product-detail' && (
+          <ProductDetail 
+            modalProduct={modalProduct}
+            closeProductDetail={closeProductDetail}
+            addToCart={addToCart}
+            viewProductDetail={viewProductDetail}
+          />
+        )}
+
+        {activeView === 'builder' && (
+          <PCBuilder 
+            builderConfig={builderConfig}
+            setBuilderConfig={setBuilderConfig}
+            addCustomPcToCart={addCustomPcToCart}
+          />
+        )}
+
+        {activeView === 'contact' && (
+          <Contact setActiveView={setActiveView} />
+        )}
+      </main>
+
+      <Footer 
+        setActiveView={setActiveView}
+        setSelectedCategory={setSelectedCategory}
+      />
+
+      <CartModal 
+        isCartOpen={isCartOpen}
+        setIsCartOpen={setIsCartOpen}
+        cart={cart}
+        setCart={setCart}
+        updateCartQuantity={updateCartQuantity}
+        removeFromCart={removeFromCart}
+        getCartTotal={getCartTotal}
+        getCartCount={getCartCount}
+        setActiveView={setActiveView}
+      />
+
+      <LoginModal 
+        isLoginOpen={isLoginOpen}
+        setIsLoginOpen={setIsLoginOpen}
+        handleLogin={handleLogin}
+        loginEmail={loginEmail}
+        setLoginEmail={setLoginEmail}
+        loginPassword={loginPassword}
+        setLoginPassword={setLoginPassword}
+      />
+    </div>
+  );
 }
 
-export default App
+export default App;
