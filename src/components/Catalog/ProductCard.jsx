@@ -1,5 +1,6 @@
 import React from 'react';
 import './Catalog.css';
+import { ShoppingCart } from 'lucide-react';
 
 const ProductCard = ({ product, onProductClick, onAddToCart }) => {
   return (
@@ -29,6 +30,7 @@ const ProductCard = ({ product, onProductClick, onAddToCart }) => {
             <span className="price-value">${product.price.toLocaleString()}</span>
           </div>
           <button className="btn-add-to-cart" onClick={(e) => { e.stopPropagation(); onAddToCart(product); }}>
+            <ShoppingCart size={16} />
             Añadir al Carrito
           </button>
         </div>

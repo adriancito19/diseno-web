@@ -1,9 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import './Hero.css';
 import { HERO_SLIDES } from '../../constants/hero';
+import { Rocket, Sparkles, Cpu, Monitor, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const Hero = ({ setActiveView, setSelectedCategory, setSearchQuery }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev === HERO_SLIDES.length - 1 ? 0 : prev + 1));
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev === 0 ? HERO_SLIDES.length - 1 : prev - 1));
+  };
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -35,28 +44,28 @@ const Hero = ({ setActiveView, setSelectedCategory, setSearchQuery }) => {
                   {slide.isRTXLaunch && (
                     <div className="rtx-features-grid">
                       <div className="rtx-feature-card">
-                        <span className="rtx-feature-icon">🚀</span>
+                        <span className="rtx-feature-icon"><Rocket size={20} /></span>
                         <div>
                           <h4>Más FPS</h4>
                           <p>En tus juegos favoritos</p>
                         </div>
                       </div>
                       <div className="rtx-feature-card">
-                        <span className="rtx-feature-icon">✨</span>
+                        <span className="rtx-feature-icon"><Sparkles size={20} /></span>
                         <div>
                           <h4>Trazado de Rayos</h4>
                           <p>Más realista que nunca</p>
                         </div>
                       </div>
                       <div className="rtx-feature-card">
-                        <span className="rtx-feature-icon">🧠</span>
+                        <span className="rtx-feature-icon"><Cpu size={20} /></span>
                         <div>
                           <h4>Rendimiento IA</h4>
                           <p>De última generación</p>
                         </div>
                       </div>
                       <div className="rtx-feature-card">
-                        <span className="rtx-feature-icon">🖥️</span>
+                        <span className="rtx-feature-icon"><Monitor size={20} /></span>
                         <div>
                           <h4>Listo para 4K</h4>
                           <p>Y 1440p en Ultra</p>
@@ -114,6 +123,14 @@ const Hero = ({ setActiveView, setSelectedCategory, setSearchQuery }) => {
           );
         })}
       </div>
+
+      {/* Navigation Arrows */}
+      <button className="carousel-arrow arrow-left" onClick={prevSlide}>
+        <ChevronLeft size={32} />
+      </button>
+      <button className="carousel-arrow arrow-right" onClick={nextSlide}>
+        <ChevronRight size={32} />
+      </button>
 
       {/* Carousel Indicators */}
       <div className="carousel-indicators">

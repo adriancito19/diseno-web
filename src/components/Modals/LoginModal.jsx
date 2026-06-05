@@ -1,5 +1,6 @@
 import React from 'react';
 import './Modals.css';
+import { X, LogIn } from 'lucide-react';
 
 const LoginModal = ({ 
   isLoginOpen, 
@@ -17,7 +18,7 @@ const LoginModal = ({
       <div className="login-modal-card" onClick={(e) => e.stopPropagation()}>
         <div className="login-header">
           <h3>Ingresar a Nova Gaming</h3>
-          <button className="btn-close-modal" onClick={() => setIsLoginOpen(false)}>✕</button>
+          <button className="btn-close-modal" onClick={() => setIsLoginOpen(false)}><X size={20} /></button>
         </div>
 
         <form onSubmit={handleLogin} className="login-form">
@@ -53,6 +54,7 @@ const LoginModal = ({
           </div>
 
           <button type="submit" className="btn-login-submit">
+            <LogIn size={18} />
             Entrar a mi Cuenta
           </button>
         </form>

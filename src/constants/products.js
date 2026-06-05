@@ -1,3 +1,74 @@
+import componentData from '../data/pc_components.json';
+
+const transformJsonToProducts = (data) => {
+  const products = [];
+  const categories = data.pc_components;
+
+  const mapCategory = {
+    procesadores: 'procesadores',
+    tarjetas_graficas: 'graficas',
+    memorias_ram: 'ram',
+    placas_madre: 'madres',
+    fuentes_de_poder: 'fuentes'
+  };
+
+  const getSpecs = (item, cat) => {
+    if (cat === 'procesadores') return [`Socket: ${item.socket}`, `Núcleos: ${item.nucleos}`, `Hilos: ${item.hilos}`, `Boost: ${item.frecuencia_boost}`];
+    if (cat === 'tarjetas_graficas') return [`VRAM: ${item.vram}`, `Bus: ${item.bus}`, `TDP: ${item.tdp}`, `Resolución: ${item.resolucion_objetivo}`];
+    if (cat === 'memorias_ram') return [`Tipo: ${item.tipo}`, `Capacidad: ${item.capacidad}`, `Velocidad: ${item.velocidad}`, `Latencia: ${item.latencia}`];
+    if (cat === 'placas_madre') return [`Chipset: ${item.chipset}`, `Socket: ${item.socket}`, `Factor: ${item.form_factor}`, `RAM: ${item.ram_tipo}`];
+    if (cat === 'fuentes_de_poder') return [`Potencia: ${item.potencia}`, `Certificación: ${item.certificacion}`, `Modular: ${item.modular}`];
+    return [];
+  };
+
+  const getCategoryImage = (cat) => {
+    const images = {
+      procesadores: 'https://placehold.co/600x400/1a1a1a/ffffff?text=CPU',
+      tarjetas_graficas: 'https://placehold.co/600x400/1a1a1a/ffffff?text=GPU',
+      memorias_ram: 'https://placehold.co/600x400/1a1a1a/ffffff?text=RAM',
+      placas_madre: 'https://placehold.co/600x400/1a1a1a/ffffff?text=MOTHERBOARD',
+      fuentes_de_poder: 'https://placehold.co/600x400/1a1a1a/ffffff?text=PSU',
+      almacenamiento: 'https://placehold.co/600x400/1a1a1a/ffffff?text=STORAGE'
+    };
+    return images[cat] || 'https://placehold.co/600x400/1a1a1a/ffffff?text=Componente';
+  };
+
+  for (const [key, items] of Object.entries(categories)) {
+    if (key === 'almacenamiento') {
+      for (const [subKey, subItems] of Object.entries(items)) {
+         subItems.forEach(item => {
+           products.push({
+             id: item.id,
+             name: item.nombre,
+             category: 'almacenamiento',
+             description: `Almacenamiento ${item.marca} ${item.capacidad} - ${item.uso || 'High Performance'}`,
+             price: item.precio_usd,
+             specs: [`Capacidad: ${item.capacidad}`, `Interfaz: ${item.interfaz}`, `Formato: ${item.form_factor || item.rpm + ' RPM'}`],
+             image: item.imagen || getCategoryImage('almacenamiento'),
+             isComponent: true
+           });
+         });
+      }
+    } else if (mapCategory[key]) {
+      items.forEach(item => {
+        products.push({
+          id: item.id,
+          name: item.nombre,
+          category: mapCategory[key],
+          description: `${item.marca} - ${item.generacion || item.arquitectura || item.certificacion || 'Componente Premium'}`,
+          price: item.precio_usd,
+          specs: getSpecs(item, key),
+          image: item.imagen || getCategoryImage(key),
+          isComponent: true
+        });
+      });
+    }
+  }
+  return products;
+};
+
+export const COMPONENT_PRODUCTS = transformJsonToProducts(componentData);
+
 export const INITIAL_PRODUCTS = [
   {
     id: 1,

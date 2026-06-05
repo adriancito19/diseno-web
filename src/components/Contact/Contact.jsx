@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Contact.css';
+import { MapPin, Mail, Phone, CheckCircle, Send } from 'lucide-react';
 
 const Contact = ({ setActiveView }) => {
   const [contactSuccess, setContactSuccess] = useState(false);
@@ -29,21 +30,21 @@ const Contact = ({ setActiveView }) => {
           
           <div className="contact-details-list">
             <div className="contact-detail-item">
-              <span className="detail-icon">📍</span>
+              <span className="detail-icon"><MapPin size={24} className="accent-icon" /></span>
               <div>
                 <h5>Oficina Central</h5>
                 <p>Distrito Tecnológico, Torre Nova Gaming - Piso 8</p>
               </div>
             </div>
             <div className="contact-detail-item">
-              <span className="detail-icon">📧</span>
+              <span className="detail-icon"><Mail size={24} className="accent-icon" /></span>
               <div>
                 <h5>Soporte de Ventas</h5>
                 <p>ventas@novagaming.com</p>
               </div>
             </div>
             <div className="contact-detail-item">
-              <span className="detail-icon">📞</span>
+              <span className="detail-icon"><Phone size={24} className="accent-icon" /></span>
               <div>
                 <h5>Llamada Gratuita</h5>
                 <p>0800-444-NOVA (6682)</p>
@@ -55,7 +56,7 @@ const Contact = ({ setActiveView }) => {
         <div className="contact-form-card">
           {contactSuccess ? (
             <div className="form-success-animation">
-              <span className="success-icon">✓</span>
+              <span className="success-icon"><CheckCircle size={64} className="text-green" /></span>
               <h3>Mensaje Enviado con Éxito</h3>
               <p>Gracias por comunicarte con nosotros. Un experto de soporte técnico te responderá en un plazo máximo de 24 horas.</p>
             </div>
@@ -100,6 +101,7 @@ const Contact = ({ setActiveView }) => {
               </div>
 
               <button type="submit" className="btn-contact-submit">
+                <Send size={18} />
                 Enviar Mensaje
               </button>
             </form>

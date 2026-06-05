@@ -1,5 +1,6 @@
 import React from 'react';
 import './Footer.css';
+import { Zap, X, Camera, Video, MessageCircle } from 'lucide-react';
 
 const Footer = ({ setActiveView, setSelectedCategory }) => {
   return (
@@ -7,13 +8,15 @@ const Footer = ({ setActiveView, setSelectedCategory }) => {
       <div className="container">
         <div className="footer-grid-modern">
           <div className="footer-brand-info">
-            <h2>⚡ NOVA<span>GAMING</span></h2>
+            <h2 className="footer-logo">
+              <Zap size={24} fill="currentColor" className="logo-icon" /> NOVA<span>GAMING</span>
+            </h2>
             <p>El estándar más alto del PC Gaming. Ensamblado a mano, probado para overclocking y optimizado al extremo.</p>
             <div className="footer-socials">
-              <a href="#" className="social-icon">𝕏</a>
-              <a href="#" className="social-icon">📸</a>
-              <a href="#" className="social-icon">📺</a>
-              <a href="#" className="social-icon">💬</a>
+              <a href="#" className="social-icon" aria-label="Twitter"><X size={20} /></a>
+              <a href="#" className="social-icon" aria-label="Instagram"><Camera size={20} /></a>
+              <a href="#" className="social-icon" aria-label="Youtube"><Video size={20} /></a>
+              <a href="#" className="social-icon" aria-label="Discord"><MessageCircle size={20} /></a>
             </div>
           </div>
 

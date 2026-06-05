@@ -1,6 +1,7 @@
 import React from 'react';
 import './PCBuilder.css';
 import { BUILDER_OPTIONS } from '../../constants/products';
+import { ShoppingCart, ShieldCheck, Cpu, HardDrive, Layout, Monitor as GpuIcon, Disc } from 'lucide-react';
 
 const PCBuilder = ({ builderConfig, setBuilderConfig, addCustomPcToCart }) => {
   const totalPrice = builderConfig.cpu.price + 
@@ -28,7 +29,7 @@ const PCBuilder = ({ builderConfig, setBuilderConfig, addCustomPcToCart }) => {
             {/* Component Option Selection: CPU */}
             <div className="builder-component-selector">
               <label className="selector-title">
-                <span className="selector-num">1</span> Procesador (CPU)
+                <span className="selector-num">1</span> <Cpu size={18} /> Procesador (CPU)
               </label>
               <div className="selector-options-list">
                 {BUILDER_OPTIONS.cpu.map((opt) => (
@@ -49,7 +50,7 @@ const PCBuilder = ({ builderConfig, setBuilderConfig, addCustomPcToCart }) => {
             {/* Component Option Selection: GPU */}
             <div className="builder-component-selector">
               <label className="selector-title">
-                <span className="selector-num">2</span> Tarjeta Gráfica (GPU)
+                <span className="selector-num">2</span> <GpuIcon size={18} /> Tarjeta Gráfica (GPU)
               </label>
               <div className="selector-options-list">
                 {BUILDER_OPTIONS.gpu.map((opt) => (
@@ -71,7 +72,7 @@ const PCBuilder = ({ builderConfig, setBuilderConfig, addCustomPcToCart }) => {
             {/* Component Option Selection: RAM */}
             <div className="builder-component-selector">
               <label className="selector-title">
-                <span className="selector-num">3</span> Memoria RAM
+                <span className="selector-num">3</span> <Disc size={18} /> Memoria RAM
               </label>
               <div className="selector-options-list">
                 {BUILDER_OPTIONS.ram.map((opt) => (
@@ -92,7 +93,7 @@ const PCBuilder = ({ builderConfig, setBuilderConfig, addCustomPcToCart }) => {
             {/* Component Option Selection: SSD */}
             <div className="builder-component-selector">
               <label className="selector-title">
-                <span className="selector-num">4</span> Almacenamiento (SSD)
+                <span className="selector-num">4</span> <HardDrive size={18} /> Almacenamiento (SSD)
               </label>
               <div className="selector-options-list">
                 {BUILDER_OPTIONS.ssd.map((opt) => (
@@ -113,7 +114,7 @@ const PCBuilder = ({ builderConfig, setBuilderConfig, addCustomPcToCart }) => {
             {/* Component Option Selection: Gabinete */}
             <div className="builder-component-selector">
               <label className="selector-title">
-                <span className="selector-num">5</span> Gabinete / Chasis
+                <span className="selector-num">5</span> <Layout size={18} /> Gabinete / Chasis
               </label>
               <div className="selector-options-list">
                 {BUILDER_OPTIONS.gabinete.map((opt) => (
@@ -189,11 +190,11 @@ const PCBuilder = ({ builderConfig, setBuilderConfig, addCustomPcToCart }) => {
                 className="btn-builder-add-cart"
                 onClick={addCustomPcToCart}
               >
-                🛒 Añadir PC Personalizada al Carrito
+                <ShoppingCart size={18} /> Añadir PC Personalizada al Carrito
               </button>
 
               <div className="builder-insurance-notes">
-                <p>🛡️ Totalmente certificado e incompatible-free. Garantía extendida de 3 años incluida.</p>
+                <p><ShieldCheck size={14} /> Totalmente certificado e incompatible-free. Garantía extendida de 3 años incluida.</p>
               </div>
             </div>
           </div>

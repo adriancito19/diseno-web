@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import './App.css';
 
 // Constants
-import { INITIAL_PRODUCTS, BUILDER_OPTIONS } from './constants/products';
+import { INITIAL_PRODUCTS, BUILDER_OPTIONS, COMPONENT_PRODUCTS } from './constants/products';
 
 // Components
 import Navbar from './components/Navbar/Navbar';
@@ -58,7 +58,8 @@ function App() {
 
   // Filtered products list
   const products = useMemo(() => {
-    let filtered = INITIAL_PRODUCTS;
+    const allAvailable = [...INITIAL_PRODUCTS, ...COMPONENT_PRODUCTS];
+    let filtered = allAvailable;
     if (selectedCategory !== 'all') {
       filtered = filtered.filter((product) => product.category === selectedCategory);
     }
@@ -172,7 +173,7 @@ function App() {
             />
             <Advantages />
             <Catalog 
-              products={products.slice(0, 3)} 
+              products={products.filter(p => !p.isComponent).slice(0, 3)} 
               selectedCategory={selectedCategory}
               setSelectedCategory={setSelectedCategory}
               searchQuery={searchQuery}

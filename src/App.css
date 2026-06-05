@@ -9,6 +9,7 @@
 
 .main-content-flow {
   flex-grow: 1;
+  padding-top: 130px;
 }
 
 .container {

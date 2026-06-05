@@ -1,5 +1,6 @@
 import React from 'react';
 import './Modals.css';
+import { X, ShoppingCart, Truck, Plus, Minus, Trash2 } from 'lucide-react';
 
 const CartModal = ({ 
   isCartOpen, 
@@ -19,7 +20,7 @@ const CartModal = ({
       <div className="cart-slide-panel" onClick={(e) => e.stopPropagation()}>
         <div className="cart-panel-header">
           <h3>Tu Carrito ({getCartCount()})</h3>
-          <button className="btn-close-panel" onClick={() => setIsCartOpen(false)}>✕</button>
+          <button className="btn-close-panel" onClick={() => setIsCartOpen(false)}><X size={20} /></button>
         </div>
 
         <div className="cart-items-flow">
@@ -39,11 +40,14 @@ const CartModal = ({
                   
                   <div className="cart-item-actions-row">
                     <div className="quantity-adjuster">
-                      <button onClick={() => updateCartQuantity(item.id, item.quantity - 1)}>-</button>
+                      <button onClick={() => updateCartQuantity(item.id, item.quantity - 1)}><Minus size={14} /></button>
                       <span>{item.quantity}</span>
-                      <button onClick={() => updateCartQuantity(item.id, item.quantity + 1)}>+</button>
+                      <button onClick={() => updateCartQuantity(item.id, item.quantity + 1)}><Plus size={14} /></button>
                     </div>
-                    <button className="btn-remove-item" onClick={() => removeFromCart(item.id)}>Eliminar</button>
+                    <button className="btn-remove-item" onClick={() => removeFromCart(item.id)}>
+                      <Trash2 size={14} />
+                      Eliminar
+                    </button>
                   </div>
                 </div>
                 <div className="cart-item-total-price">
@@ -53,7 +57,7 @@ const CartModal = ({
             ))
           ) : (
             <div className="empty-cart-state">
-              <span className="empty-cart-icon">🛒</span>
+              <span className="empty-cart-icon"><ShoppingCart size={64} strokeWidth={1} /></span>
               <p>Tu carrito está vacío</p>
               <button className="btn-primary-solid" onClick={() => { setIsCartOpen(false); setActiveView('catalog'); }}>
                 Explorar Catálogo
@@ -68,7 +72,7 @@ const CartModal = ({
               <span>Subtotal:</span>
               <span className="cart-total-value">${getCartTotal().toLocaleString()}</span>
             </div>
-            <p className="shipping-note">🚚 Envío gratuito y seguro de tránsito gaming incluido.</p>
+            <p className="shipping-note"><Truck size={14} /> Envío gratuito y seguro de tránsito gaming incluido.</p>
             <button 
               className="btn-checkout"
               onClick={() => {

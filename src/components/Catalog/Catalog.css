@@ -50,6 +50,7 @@
 .category-filters-row {
   display: flex;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
 .filter-tab-btn {
