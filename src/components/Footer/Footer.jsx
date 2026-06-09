@@ -1,6 +1,6 @@
 import React from 'react';
 import './Footer.css';
-import { Zap, X, Camera, Video, MessageCircle } from 'lucide-react';
+import { X, Camera, Video, MessageCircle } from 'lucide-react';
 
 const Footer = ({ setActiveView, setSelectedCategory }) => {
   return (
@@ -9,7 +9,7 @@ const Footer = ({ setActiveView, setSelectedCategory }) => {
         <div className="footer-grid-modern">
           <div className="footer-brand-info">
             <h2 className="footer-logo">
-              <Zap size={24} fill="currentColor" className="logo-icon" /> NOVA<span>GAMING</span>
+              PC<span> ASSEMBLY</span>
             </h2>
             <p>El estándar más alto del PC Gaming. Ensamblado a mano, probado para overclocking y optimizado al extremo.</p>
             <div className="footer-socials">
@@ -51,7 +51,7 @@ const Footer = ({ setActiveView, setSelectedCategory }) => {
         </div>
 
         <div className="footer-bottom-bar">
-          <p>&copy; {new Date().getFullYear()} Nova Gaming Corporation. Diseñado con fines de demostración de experiencia moderna de e-commerce.</p>
+          <p>&copy; {new Date().getFullYear()} PC ASSEMBLY. Diseñado con fines de demostración de experiencia moderna de e-commerce.</p>
         </div>
       </div>
     </footer>

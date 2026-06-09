@@ -1,9 +1,10 @@
-import componentData from '../data/pc_components.json';
+// import componentData from '../data/pc_components.json';
 
 const transformJsonToProducts = (data) => {
+  if (!data) return [];
   const products = [];
   const categories = data.pc_components;
-
+/*
   const mapCategory = {
     procesadores: 'procesadores',
     tarjetas_graficas: 'graficas',
@@ -64,10 +65,12 @@ const transformJsonToProducts = (data) => {
       });
     }
   }
+*/
   return products;
 };
 
-export const COMPONENT_PRODUCTS = transformJsonToProducts(componentData);
+export const COMPONENT_PRODUCTS = []; // transformJsonToProducts(componentData);
+
 
 export const INITIAL_PRODUCTS = [
   {

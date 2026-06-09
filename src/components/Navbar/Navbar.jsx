@@ -1,6 +1,7 @@
 import React from 'react';
 import './Navbar.css';
-import { Zap, Search, User, ShoppingCart } from 'lucide-react';
+import { Search, User, ShoppingCart } from 'lucide-react';
+import logo from '../../assets/logo.jpeg';
 
 const Navbar = ({ 
   activeView, 
@@ -20,8 +21,8 @@ const Navbar = ({
         {/* Top Row: Brand, Search, User/Cart Actions */}
         <div className="nav-top-row">
           <div className="nav-brand" onClick={() => { setActiveView('home'); setSelectedCategory('all'); }}>
-            <span className="brand-icon"><Zap size={24} fill="currentColor" /></span>
-            <span className="brand-text">NOVA<span className="text-accent">GAMING</span></span>
+            <img src={logo} alt="PC ASSEMBLY Logo" className="brand-logo-img" />
+            <span className="brand-text">PC<span className="text-accent"> ASSEMBLY</span></span>
           </div>
 
           {/* Mockup Fusion Search Bar */}

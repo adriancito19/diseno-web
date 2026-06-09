@@ -33,8 +33,15 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   user-select: none;
+}
+
+.brand-logo-img {
+  height: 38px;
+  width: auto;
+  border-radius: 6px;
+  object-fit: contain;
 }
 
 .brand-icon {
